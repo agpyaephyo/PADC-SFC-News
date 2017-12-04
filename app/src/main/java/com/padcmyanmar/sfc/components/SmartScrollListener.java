@@ -13,9 +13,7 @@ public class SmartScrollListener extends RecyclerView.OnScrollListener {
         void onListEndReach();
     }
 
-    private int visibleItemCount, pastVisibleItems, totalItemCount;
     private boolean isListEndReached = false;
-    private int previousDy, currentDy;
 
     private OnSmartScrollListener mSmartScrollListener;
 
@@ -27,30 +25,23 @@ public class SmartScrollListener extends RecyclerView.OnScrollListener {
     public void onScrolled(RecyclerView rv, int dx, int dy) {
         super.onScrolled(rv, dx, dy);
 
-        currentDy = dy;
-        if (currentDy > previousDy) {
-            //from top to bottom
-        } else if (currentDy < previousDy) {
-            //from bottom to top
+        int visibleItemCount = rv.getLayoutManager().getChildCount();
+        int totalItemCount = rv.getLayoutManager().getItemCount();
+        int pastVisibleItems = ((LinearLayoutManager) rv.getLayoutManager()).findFirstVisibleItemPosition();
+
+        if ((visibleItemCount + pastVisibleItems) < totalItemCount) {
             isListEndReached = false;
         }
-
-        visibleItemCount = rv.getLayoutManager().getChildCount();
-        totalItemCount = rv.getLayoutManager().getItemCount();
-        pastVisibleItems = ((LinearLayoutManager) rv.getLayoutManager()).findFirstVisibleItemPosition();
-
-        previousDy = currentDy;
     }
 
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
         super.onScrollStateChanged(recyclerView, scrollState);
-        if (scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-            if ((visibleItemCount + pastVisibleItems) >= totalItemCount
-                    && !isListEndReached) {
-                isListEndReached = true;
-                mSmartScrollListener.onListEndReach();
-            }
+        if (scrollState == RecyclerView.SCROLL_STATE_IDLE
+                && ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1
+                && !isListEndReached) {
+            isListEndReached = true;
+            mSmartScrollListener.onListEndReach();
         }
     }
 }

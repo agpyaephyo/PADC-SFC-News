@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/margin_medium_2"
+    android:paddingRight="@dimen/margin_medium_2"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/lbl_navigate_to_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:foreground="@drawable/bg_ripple_primary"
+        android:padding="8dp"
+        android:text="@string/lbl_navigate_to_login"
+        android:textColor="@color/primary"
+        android:textSize="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="24dp"
+        />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_register_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/primary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_register_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="sans-serif-light"
+            android:hint="Your Name"
+            android:maxLines="1"
+            android:textColorHint="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold">
+
+        </android.support.v7.widget.AppCompatEditText>
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_phone_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/sp_country_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:entries="@array/supporting_country_code" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_register_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:textColorHint="@color/primary">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_register_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_enter_phone"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textColorHint="@color/primary"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </android.support.v7.widget.AppCompatEditText>
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_register_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/primary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="sans-serif-light"
+            android:hint="@string/hint_enter_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColorHint="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold">
+
+        </android.support.v7.widget.AppCompatEditText>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_register_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/primary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:drawableRight="@drawable/ic_visibility_black_24dp"
+            android:fontFamily="sans-serif-light"
+            android:hint="@string/hint_enter_password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColorHint="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold">
+
+        </android.support.v7.widget.AppCompatEditText>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_register_confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/primary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_register_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:drawableRight="@drawable/ic_visibility_black_24dp"
+            android:fontFamily="sans-serif-light"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColorHint="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold">
+
+        </android.support.v7.widget.AppCompatEditText>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_register_company_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/primary"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_layout_register_company_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="sans-serif-light"
+            android:hint="Your Address"
+            android:maxLines="1"
+            android:textColorHint="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold">
+
+        </android.support.v7.widget.AppCompatEditText>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/chk_company_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="I'm home"
+        />
+
+    <TextView
+        android:id="@+id/tv_mark_my_company_on_google_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:clickable="true"
+        android:foreground="@drawable/bg_ripple_primary"
+        android:padding="8dp"
+        android:text="@string/lbl_mark_my_home_on_google_map"
+        android:textColor="@color/primary"
+        />
+
+    <TextView
+        android:id="@+id/tv_sign_up_as_seller"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="right"
+        android:background="@color/primary"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:fontFamily="sans-serif-condensed"
+        android:foreground="@drawable/bg_ripple_white"
+        android:paddingBottom="8dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="8dp"
+        android:text="Register"
+        android:textAlignment="center"
+        android:textColor="@color/white_full"
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:gravity="center_vertical"
+        />
+
+</LinearLayout>

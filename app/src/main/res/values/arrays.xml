@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="supporting_country_code">
+        <item>+959 (09)</item>
+    </string-array>
+</resources>

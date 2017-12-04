@@ -4,26 +4,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.padcmyanmar.sfc.R;
+import com.padcmyanmar.sfc.SFCNewsApp;
 import com.padcmyanmar.sfc.adapters.NewsAdapter;
 import com.padcmyanmar.sfc.components.EmptyViewPod;
 import com.padcmyanmar.sfc.components.SmartRecyclerView;
 import com.padcmyanmar.sfc.components.SmartScrollListener;
 import com.padcmyanmar.sfc.delegates.NewsItemDelegate;
+import com.padcmyanmar.sfc.events.RestApiEvents;
+import com.padcmyanmar.sfc.events.TapNewsEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewsListActivity extends AppCompatActivity
+public class NewsListActivity extends BaseActivity
         implements NewsItemDelegate {
 
     @BindView(R.id.drawer_layout)
@@ -36,6 +44,8 @@ public class NewsListActivity extends AppCompatActivity
     EmptyViewPod vpEmptyNews;
 
     private SmartScrollListener mSmartScrollListener;
+
+    private NewsAdapter mNewsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +64,23 @@ public class NewsListActivity extends AppCompatActivity
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                         */
-                drawerLayout.openDrawer(GravityCompat.START);
+
+                //drawerLayout.openDrawer(GravityCompat.START);
+
+                /*
+                Intent intent = LoginRegisterActivity.newIntent(getApplicationContext());
+                startActivity(intent);
+                */
+
+                Date today = new Date();
+                Log.d(SFCNewsApp.LOG_TAG, "Today (with default format) : " + today.toString());
             }
         });
 
         rvNews.setEmptyView(vpEmptyNews);
         rvNews.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        NewsAdapter newsAdapter = new NewsAdapter(getApplicationContext(), this);
-        rvNews.setAdapter(newsAdapter);
+        mNewsAdapter = new NewsAdapter(getApplicationContext(), this);
+        rvNews.setAdapter(mNewsAdapter);
 
         mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
             @Override
@@ -96,6 +115,18 @@ public class NewsListActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onTapComment() {
 
     }
@@ -119,5 +150,22 @@ public class NewsListActivity extends AppCompatActivity
     public void onTapNews() {
         Intent intent = NewsDetailsActivity.newIntent(getApplicationContext());
         startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTapNewsEvent(TapNewsEvent event) {
+        event.getNewsId();
+        Intent intent = NewsDetailsActivity.newIntent(getApplicationContext());
+        startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
+        mNewsAdapter.appendNewData(event.getLoadNews());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onErrorInvokingAPI(RestApiEvents.ErrorInvokingAPIEvent event) {
+        Snackbar.make(rvNews, event.getErrorMsg(), Snackbar.LENGTH_INDEFINITE).show();
     }
 }

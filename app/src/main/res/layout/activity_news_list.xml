@@ -61,7 +61,7 @@
     <android.support.design.widget.NavigationView
         android:layout_width="320dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
+        android:layout_gravity="start"
         app:headerLayout="@layout/view_pod_login_user"
         app:itemTextColor="@drawable/state_left_menu_item"
         app:menu="@menu/left_menu_news" />
