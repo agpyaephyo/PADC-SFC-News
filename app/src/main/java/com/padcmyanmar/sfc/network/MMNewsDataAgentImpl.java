@@ -52,26 +52,17 @@ public class MMNewsDataAgentImpl implements MMNewsDataAgent {
     @Override
     public void loadMMNews(String accessToken, int pageNo) {
         Call<GetNewsResponse> loadMMNewsCall = theAPI.loadMMNews(pageNo, accessToken);
-        loadMMNewsCall.enqueue(new Callback<GetNewsResponse>() {
+        loadMMNewsCall.enqueue(new SFCCallback<GetNewsResponse>() {
             @Override
             public void onResponse(Call<GetNewsResponse> call, Response<GetNewsResponse> response) {
+                super.onResponse(call, response);
                 GetNewsResponse getNewsResponse = response.body();
                 if (getNewsResponse != null
                         && getNewsResponse.getNewsList().size() > 0) {
                     RestApiEvents.NewsDataLoadedEvent newsDataLoadedEvent = new RestApiEvents.NewsDataLoadedEvent(
                             getNewsResponse.getPageNo(), getNewsResponse.getNewsList());
                     EventBus.getDefault().post(newsDataLoadedEvent);
-                } else {
-                    RestApiEvents.ErrorInvokingAPIEvent errorEvent
-                            = new RestApiEvents.ErrorInvokingAPIEvent("No data could be loaded for now. Pls try again later.");
-                    EventBus.getDefault().post(errorEvent);
                 }
-            }
-
-            @Override
-            public void onFailure(Call<GetNewsResponse> call, Throwable t) {
-                RestApiEvents.ErrorInvokingAPIEvent errorEvent = new RestApiEvents.ErrorInvokingAPIEvent(t.getMessage());
-                EventBus.getDefault().post(errorEvent);
             }
         });
     }

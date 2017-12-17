@@ -28,4 +28,6 @@ public class NewsAdapter extends BaseRecyclerAdapter<NewsViewHolder, NewsVO> {
         View newsItemView = mLayoutInflator.inflate(R.layout.view_item_news, parent, false);
         return new NewsViewHolder(newsItemView, mNewsItemDelegate);
     }
+
+
 }

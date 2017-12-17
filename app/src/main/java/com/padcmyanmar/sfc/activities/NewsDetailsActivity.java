@@ -10,6 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import com.padcmyanmar.sfc.R;
 import com.padcmyanmar.sfc.adapters.NewsImagesPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,5 +40,21 @@ public class NewsDetailsActivity extends BaseActivity {
 
         NewsImagesPagerAdapter newsImagesPagerAdapter = new NewsImagesPagerAdapter(getApplicationContext());
         vpNewsDetailsImages.setAdapter(newsImagesPagerAdapter);
+
+        vpNewsDetailsImages.setOffscreenPageLimit(newsImagesPagerAdapter.getCount());
+
+        Map<String, Object> mapSample = new HashMap<>();
+        List<Object> listSample = new ArrayList<>(mapSample.values());
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
 }

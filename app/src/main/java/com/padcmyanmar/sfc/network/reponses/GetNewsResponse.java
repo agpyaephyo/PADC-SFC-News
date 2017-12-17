@@ -2,6 +2,7 @@ package com.padcmyanmar.sfc.network.reponses;
 
 import com.google.gson.annotations.SerializedName;
 import com.padcmyanmar.sfc.data.vo.NewsVO;
+import com.padcmyanmar.sfc.network.SFCResponse;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by aung on 12/3/17.
  */
 
-public class GetNewsResponse {
+public class GetNewsResponse extends SFCResponse {
 
     @SerializedName("code")
     private int code;

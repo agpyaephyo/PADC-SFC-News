@@ -27,7 +27,8 @@
 
         </activity>
 
-        <activity android:name=".activities.LoginRegisterActivity"
+        <activity
+            android:name=".activities.LoginRegisterActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
@@ -37,6 +38,13 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name=".persistence.MMNewsProvider"
+            android:authorities="com.padcmyanmar.sfc"
+            android:exported="false"
+            android:syncable="true" />
+
     </application>
 
 </manifest>

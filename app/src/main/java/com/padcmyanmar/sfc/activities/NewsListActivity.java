@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +19,8 @@ import com.padcmyanmar.sfc.adapters.NewsAdapter;
 import com.padcmyanmar.sfc.components.EmptyViewPod;
 import com.padcmyanmar.sfc.components.SmartRecyclerView;
 import com.padcmyanmar.sfc.components.SmartScrollListener;
+import com.padcmyanmar.sfc.data.models.NewsModel;
+import com.padcmyanmar.sfc.data.vo.NewsVO;
 import com.padcmyanmar.sfc.delegates.NewsItemDelegate;
 import com.padcmyanmar.sfc.events.RestApiEvents;
 import com.padcmyanmar.sfc.events.TapNewsEvent;
@@ -27,6 +30,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +46,9 @@ public class NewsListActivity extends BaseActivity
 
     @BindView(R.id.vp_empty_news)
     EmptyViewPod vpEmptyNews;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private SmartScrollListener mSmartScrollListener;
 
@@ -85,11 +92,20 @@ public class NewsListActivity extends BaseActivity
         mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
             @Override
             public void onListEndReach() {
-                Snackbar.make(rvNews, "This is all the data for NOW.", Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(rvNews, "This is all the data for NOW.", Snackbar.LENGTH_LONG).show();
+                NewsModel.getInstance().loadMoreNews();
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                NewsModel.getInstance().forceRefreshNews();
             }
         });
 
         rvNews.addOnScrollListener(mSmartScrollListener);
+
     }
 
     @Override
@@ -118,6 +134,12 @@ public class NewsListActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        List<NewsVO> newsList = NewsModel.getInstance().getNews();
+        if (!newsList.isEmpty()) {
+            mNewsAdapter.setNewData(newsList);
+        } else {
+            swipeRefreshLayout.setRefreshing(true);
+        }
     }
 
     @Override
@@ -162,10 +184,12 @@ public class NewsListActivity extends BaseActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
         mNewsAdapter.appendNewData(event.getLoadNews());
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onErrorInvokingAPI(RestApiEvents.ErrorInvokingAPIEvent event) {
         Snackbar.make(rvNews, event.getErrorMsg(), Snackbar.LENGTH_INDEFINITE).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

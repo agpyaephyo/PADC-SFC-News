@@ -38,9 +38,23 @@ public class NewsModel {
         MMNewsDataAgentImpl.getInstance().loadMMNews(AppConstants.ACCESS_TOKEN, mmNewsPageIndex);
     }
 
+    public List<NewsVO> getNews() {
+        return mNews;
+    }
+
+    public void loadMoreNews() {
+        MMNewsDataAgentImpl.getInstance().loadMMNews(AppConstants.ACCESS_TOKEN, mmNewsPageIndex);
+    }
+
     @Subscribe
     public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
         mNews.addAll(event.getLoadNews());
         mmNewsPageIndex = event.getLoadedPageIndex() + 1;
+    }
+
+    public void forceRefreshNews() {
+        mNews = new ArrayList<>();
+        mmNewsPageIndex = 1;
+        startLoadingMMNews();
     }
 }

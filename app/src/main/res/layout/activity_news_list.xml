@@ -26,27 +26,34 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <RelativeLayout
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="com.padcmyanmar.sfc.activities.NewsListActivity"
-            tools:showIn="@layout/activity_news_list">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.padcmyanmar.sfc.components.SmartRecyclerView
-                android:id="@+id/rv_news"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                tools:context="com.padcmyanmar.sfc.activities.NewsListActivity"
+                tools:showIn="@layout/activity_news_list">
 
-            </com.padcmyanmar.sfc.components.SmartRecyclerView>
+                <com.padcmyanmar.sfc.components.SmartRecyclerView
+                    android:id="@+id/rv_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/vp_empty_news"
-                layout="@layout/view_pod_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                </com.padcmyanmar.sfc.components.SmartRecyclerView>
 
-        </RelativeLayout>
+                <include
+                    android:id="@+id/vp_empty_news"
+                    layout="@layout/view_pod_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

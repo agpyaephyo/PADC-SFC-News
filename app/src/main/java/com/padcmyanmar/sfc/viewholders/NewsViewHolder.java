@@ -28,9 +28,6 @@ public class NewsViewHolder extends BaseViewHolder<NewsVO> {
 
     @Override
     public void onClick(View v) {
-        //mDelegate.onTapNews();
-
-        //EventBus.getDefault().post(new TapNewsEvent("news-id"));
-        EventBus.getDefault().post(new RestApiEvents.EmptyResponseEvent());
+        mDelegate.onTapNews();
     }
 }
