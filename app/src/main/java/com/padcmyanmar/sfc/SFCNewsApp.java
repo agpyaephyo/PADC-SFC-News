@@ -1,8 +1,10 @@
 package com.padcmyanmar.sfc;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.padcmyanmar.sfc.data.models.NewsModel;
+import com.padcmyanmar.sfc.utils.ConfigUtils;
 
 /**
  * Created by aung on 11/4/17.
@@ -15,6 +17,8 @@ public class SFCNewsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        NewsModel.getInstance().startLoadingMMNews();
+        ConfigUtils.initConfigUtils(getApplicationContext());
+
+        NewsModel.getInstance().startLoadingMMNews(getApplicationContext());
     }
 }

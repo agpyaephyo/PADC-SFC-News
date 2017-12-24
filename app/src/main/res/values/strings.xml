@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">PADC-SFC-News</string>
     <string name="action_settings">Settings</string>
 
@@ -29,4 +29,6 @@
     <string name="hint_enter_email">Your Email</string>
     <string name="hint_enter_password">Password</string>
     <string name="lbl_mark_my_home_on_google_map"><u><i>Mark my home on Google Map</i></u></string>
+
+    <string name="format_news_statistical_data"><xliff:g id="like_count">%1$d</xliff:g> Likes - <xliff:g id="comment_count">%2$d</xliff:g> Comments and Sent to <xliff:g id="sent_count">%3$d</xliff:g> people</string>
 </resources>

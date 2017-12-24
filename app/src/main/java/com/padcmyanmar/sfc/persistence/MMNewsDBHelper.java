@@ -66,6 +66,7 @@ public class MMNewsDBHelper extends SQLiteOpenHelper {
             MMNewsContract.SentToActionEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             MMNewsContract.SentToActionEntry.COLUMN_SENT_TO_ID + " VARCHAR(256), " +
             MMNewsContract.SentToActionEntry.COLUMN_SENT_DATE + " TEXT, " +
+            MMNewsContract.SentToActionEntry.COLUMN_NEWS_ID + " VARCHAR(256), " +
             MMNewsContract.SentToActionEntry.COLUMN_SENDER_ID + " VARCHAR(256), " +
             MMNewsContract.SentToActionEntry.COLUMN_RECEIVER_ID + " VARCHAR(256), " +
 

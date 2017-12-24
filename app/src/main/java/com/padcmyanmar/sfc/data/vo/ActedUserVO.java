@@ -1,6 +1,7 @@
 package com.padcmyanmar.sfc.data.vo;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.google.gson.annotations.SerializedName;
 import com.padcmyanmar.sfc.persistence.MMNewsContract;
@@ -38,5 +39,13 @@ public class ActedUserVO {
         contentValues.put(MMNewsContract.ActedUserEntry.COLUMN_USER_NAME, userName);
         contentValues.put(MMNewsContract.ActedUserEntry.COLUMN_PROFILE_IMAGE, profileImage);
         return contentValues;
+    }
+
+    public static ActedUserVO parseFromCursor(Cursor cursor) {
+        ActedUserVO actedUser = new ActedUserVO();
+        actedUser.userId = cursor.getString(cursor.getColumnIndex(MMNewsContract.ActedUserEntry.COLUMN_USER_ID));
+        actedUser.userName = cursor.getString(cursor.getColumnIndex(MMNewsContract.ActedUserEntry.COLUMN_USER_NAME));
+        actedUser.profileImage = cursor.getString(cursor.getColumnIndex(MMNewsContract.ActedUserEntry.COLUMN_PROFILE_IMAGE));
+        return actedUser;
     }
 }

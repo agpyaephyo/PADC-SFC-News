@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_medium_2"
@@ -17,7 +18,7 @@
             android:layout_width="@dimen/logo_size"
             android:layout_height="@dimen/logo_size"
             android:layout_margin="@dimen/margin_card_medium_2"
-            android:src="@drawable/img_publication_logo_placeholder" />
+            tool:src="@drawable/img_publication_logo_placeholder" />
 
         <TextView
             android:id="@+id/tv_publication_name"
@@ -26,10 +27,9 @@
             android:layout_alignTop="@id/iv_publication_logo"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_toRightOf="@id/iv_publication_logo"
-            android:text="Eleven Media"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/text_regular_2x"
-            />
+            tool:text="Eleven Media" />
 
         <TextView
             android:id="@+id/tv_published_date"
@@ -38,21 +38,19 @@
             android:layout_alignLeft="@id/tv_publication_name"
             android:layout_below="@id/tv_publication_name"
             android:layout_marginTop="@dimen/margin_small"
-            android:text="Posted At : Jan 01 - 6:30AM"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/text_regular"
-            />
+            tool:text="Posted At : Jan 01 - 6:30AM" />
 
         <ImageView
             android:id="@+id/iv_favorite_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/margin_medium_2"
-            android:src="@drawable/ic_favorite_border_primary_24dp"
             android:clickable="true"
             android:foreground="@drawable/bg_ripple_primary"
-            />
+            android:padding="@dimen/margin_medium_2"
+            android:src="@drawable/ic_favorite_border_primary_24dp" />
 
         <TextView
             android:id="@+id/tv_brief_news"
@@ -62,12 +60,11 @@
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_medium_n"
-            android:text="@string/dummy_news"
-            android:textColor="@color/primary_text"
+            android:ellipsize="end"
             android:lineSpacingMultiplier="1.3"
             android:maxLines="8"
-            android:ellipsize="end"
-            />
+            android:textColor="@color/primary_text"
+            tool:text="@string/dummy_news" />
 
         <ImageView
             android:id="@+id/iv_news_hero_image"
@@ -75,7 +72,7 @@
             android:layout_height="200dp"
             android:layout_below="@id/tv_brief_news"
             android:layout_marginTop="@dimen/margin_medium_2"
-            android:src="@drawable/img_news_placeholder" />
+            tool:src="@drawable/img_news_placeholder" />
 
         <TextView
             android:id="@+id/tv_news_statistical_data"
@@ -84,8 +81,8 @@
             android:layout_below="@id/iv_news_hero_image"
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="3 Likes - 3 Comments - Sent to 6 people"
-            android:textColor="@color/primary" />
+            android:textColor="@color/primary"
+            tool:text="3 Likes - 3 Comments - Sent to 6 people" />
 
         <LinearLayout
             android:id="@+id/ll_news_user_actions"

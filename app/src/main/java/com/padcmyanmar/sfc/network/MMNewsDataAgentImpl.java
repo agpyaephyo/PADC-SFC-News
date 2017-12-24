@@ -1,5 +1,7 @@
 package com.padcmyanmar.sfc.network;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.padcmyanmar.sfc.events.RestApiEvents;
 import com.padcmyanmar.sfc.network.reponses.GetNewsResponse;
@@ -10,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -50,7 +51,7 @@ public class MMNewsDataAgentImpl implements MMNewsDataAgent {
     }
 
     @Override
-    public void loadMMNews(String accessToken, int pageNo) {
+    public void loadMMNews(String accessToken, int pageNo, final Context context) {
         Call<GetNewsResponse> loadMMNewsCall = theAPI.loadMMNews(pageNo, accessToken);
         loadMMNewsCall.enqueue(new SFCCallback<GetNewsResponse>() {
             @Override
@@ -60,7 +61,7 @@ public class MMNewsDataAgentImpl implements MMNewsDataAgent {
                 if (getNewsResponse != null
                         && getNewsResponse.getNewsList().size() > 0) {
                     RestApiEvents.NewsDataLoadedEvent newsDataLoadedEvent = new RestApiEvents.NewsDataLoadedEvent(
-                            getNewsResponse.getPageNo(), getNewsResponse.getNewsList());
+                            getNewsResponse.getPageNo(), getNewsResponse.getNewsList(), context);
                     EventBus.getDefault().post(newsDataLoadedEvent);
                 }
             }

@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.padcmyanmar.sfc.R;
+import com.padcmyanmar.sfc.viewitems.NewsDetailsImageViewItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aung on 11/11/17.
@@ -15,15 +19,17 @@ import com.padcmyanmar.sfc.R;
 public class NewsImagesPagerAdapter extends PagerAdapter {
 
     private LayoutInflater mLayoutInflater;
+    private List<String> mImages;
 
     public NewsImagesPagerAdapter(Context context) {
         super();
         mLayoutInflater = LayoutInflater.from(context);
+        mImages = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return mImages.size();
     }
 
     @Override
@@ -33,7 +39,8 @@ public class NewsImagesPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = mLayoutInflater.inflate(R.layout.view_item_news_details_image, container, false);
+        NewsDetailsImageViewItem itemView = (NewsDetailsImageViewItem) mLayoutInflater.inflate(R.layout.view_item_news_details_image, container, false);
+        itemView.setData(mImages.get(position));
         container.addView(itemView);
 
         return itemView;
@@ -41,6 +48,11 @@ public class NewsImagesPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
+    }
+
+    public void setImages(List<String> images) {
+        mImages = images;
+        notifyDataSetChanged();
     }
 }
