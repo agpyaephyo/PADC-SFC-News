@@ -10,6 +10,7 @@ import com.padcmyanmar.sfc.data.vo.NewsVO;
 import com.padcmyanmar.sfc.data.vo.PublicationVO;
 import com.padcmyanmar.sfc.data.vo.SentToVO;
 import com.padcmyanmar.sfc.events.RestApiEvents;
+import com.padcmyanmar.sfc.network.MMNewsDataAgent;
 import com.padcmyanmar.sfc.network.MMNewsDataAgentImpl;
 import com.padcmyanmar.sfc.persistence.MMNewsContract;
 import com.padcmyanmar.sfc.utils.AppConstants;
@@ -22,32 +23,34 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by aung on 12/3/17.
  */
 
 public class NewsModel {
 
-    private static NewsModel objInstance;
-
     private List<NewsVO> mNews;
     //private int mmNewsPageIndex = 1;
 
-    private NewsModel() {
+    @Inject
+    MMNewsDataAgent mDataAgent;
+
+    @Inject
+    ConfigUtils mConfigUtils;
+
+    public NewsModel(Context context) {
         EventBus.getDefault().register(this);
         mNews = new ArrayList<>();
-    }
 
-    public static NewsModel getInstance() {
-        if (objInstance == null) {
-            objInstance = new NewsModel();
-        }
-        return objInstance;
+        SFCNewsApp sfcNewsApp = (SFCNewsApp) context.getApplicationContext();
+        sfcNewsApp.getSFCAppComponent().inject(this);
     }
 
     public void startLoadingMMNews(Context context) {
-        MMNewsDataAgentImpl.getInstance().loadMMNews(AppConstants.ACCESS_TOKEN,
-                ConfigUtils.getObjInstance().loadPageIndex(),
+        mDataAgent.loadMMNews(AppConstants.ACCESS_TOKEN,
+                mConfigUtils.loadPageIndex(),
                 context);
     }
 
@@ -56,8 +59,8 @@ public class NewsModel {
     }
 
     public void loadMoreNews(Context context) {
-        int pageIndex = ConfigUtils.getObjInstance().loadPageIndex();
-        MMNewsDataAgentImpl.getInstance().loadMMNews(AppConstants.ACCESS_TOKEN,
+        int pageIndex = mConfigUtils.loadPageIndex();
+        mDataAgent.loadMMNews(AppConstants.ACCESS_TOKEN,
                 pageIndex,
                 context);
     }
@@ -65,7 +68,7 @@ public class NewsModel {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
         mNews.addAll(event.getLoadNews());
-        ConfigUtils.getObjInstance().savePageIndex(event.getLoadedPageIndex() + 1);
+        mConfigUtils.savePageIndex(event.getLoadedPageIndex() + 1);
 
         //Logic to save the data in Persistence Layer
         ContentValues[] newsCVs = new ContentValues[event.getLoadNews().size()];
@@ -97,7 +100,7 @@ public class NewsModel {
                 usersInActionCVList.add(userInActionCV);
             }
 
-            for(SentToVO sentToAction : news.getSentToActions()) {
+            for (SentToVO sentToAction : news.getSentToActions()) {
                 ContentValues sentToActionCV = sentToAction.parseToContentValues(news.getNewsId());
                 sentToInNewsCVList.add(sentToActionCV);
 
@@ -136,7 +139,7 @@ public class NewsModel {
 
     public void forceRefreshNews(Context context) {
         mNews = new ArrayList<>();
-        ConfigUtils.getObjInstance().savePageIndex(1);
+        mConfigUtils.savePageIndex(1);
         startLoadingMMNews(context);
     }
 }
