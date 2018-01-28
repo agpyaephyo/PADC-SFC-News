@@ -50,4 +50,14 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.12'
     compile 'com.google.dagger:dagger:2.12'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    implementation 'net.aungpyaephyo:mmtextview:1.1'
+
+    compile 'com.google.android.gms:play-services-auth:11.0.4'
+
+    compile 'com.google.firebase:firebase-core:11.0.4'
+    compile 'com.google.firebase:firebase-database:11.0.4'
+    compile 'com.google.firebase:firebase-auth:11.0.4'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "361982611690",
+    "firebase_url": "https://mm-news-padc-myanmar.firebaseio.com",
+    "project_id": "mm-news-padc-myanmar",
+    "storage_bucket": "mm-news-padc-myanmar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361982611690:android:55d644698748eccb",
+        "android_client_info": {
+          "package_name": "com.padcmyanmar.sfc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "361982611690-mkdlbpoc5ct5eb9mep2kd6fhd7usimiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.padcmyanmar.sfc",
+            "certificate_hash": "08f3173b7ff8e85d3971085387ed01ce2e634a6b"
+          }
+        },
+        {
+          "client_id": "361982611690-rg7da1qmrqb0jejuek99qn050kv6c5jb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_5qmCZlCuRQxD7_1zc7n81yvG0HgZ_PE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361982611690-rg7da1qmrqb0jejuek99qn050kv6c5jb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

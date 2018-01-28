@@ -2,7 +2,9 @@ package com.padcmyanmar.sfc.mvp.presenters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.padcmyanmar.sfc.SFCNewsApp;
 import com.padcmyanmar.sfc.data.models.NewsModel;
 import com.padcmyanmar.sfc.data.vo.NewsVO;
@@ -36,12 +38,14 @@ public class NewsListPresenter extends BasePresenter<NewsListView> implements Ne
 
     @Override
     public void onStart() {
+        /*
         List<NewsVO> newsList = mNewsModel.getNews();
         if (!newsList.isEmpty()) {
             mView.displayNewsList(newsList);
         } else {
             mView.showLoading();
         }
+        */
     }
 
     @Override
@@ -93,5 +97,19 @@ public class NewsListPresenter extends BasePresenter<NewsListView> implements Ne
     @Override
     public void onTapNews(NewsVO news) {
         mView.navigateToNewsDetails(news);
+    }
+
+    public void onSuccessGoogleSignIn(GoogleSignInAccount signInAccount) {
+        mNewsModel.authenticateUserWithGoogleAccount(signInAccount, new NewsModel.UserAuthenticateDelegate() {
+            @Override
+            public void onSuccessAuthenticate(GoogleSignInAccount account) {
+                Log.d(SFCNewsApp.LOG_TAG, "onSuccessAuthenticate : " + account.getDisplayName());
+            }
+
+            @Override
+            public void onFailureAuthenticate(String errorMsg) {
+                Log.d(SFCNewsApp.LOG_TAG, "onFailureAuthenticate : " + errorMsg);
+            }
+        });
     }
 }

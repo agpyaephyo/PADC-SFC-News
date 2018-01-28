@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -17,7 +18,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.padcmyanmar.sfc.R;
 import com.padcmyanmar.sfc.SFCNewsApp;
 import com.padcmyanmar.sfc.adapters.NewsAdapter;
@@ -41,11 +49,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class NewsListActivity extends BaseActivity
-        implements LoaderManager.LoaderCallbacks<Cursor>, NewsListView {
+        implements LoaderManager.LoaderCallbacks<Cursor>, NewsListView, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int NEWS_LIST_LOADER_ID = 1001;
+    protected static final int RC_GOOGLE_SIGN_IN = 1236;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -67,6 +77,8 @@ public class NewsListActivity extends BaseActivity
     NewsListPresenter mPresenter;
 
     private View mClickedView;
+
+    protected GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +140,16 @@ public class NewsListActivity extends BaseActivity
         rvNews.addOnScrollListener(mSmartScrollListener);
 
         getSupportLoaderManager().initLoader(NEWS_LIST_LOADER_ID, null, this);
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("361982611690-rg7da1qmrqb0jejuek99qn050kv6c5jb.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this /*FragmentActivity*/, this /*OnConnectionFailedListener*/)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .build();
     }
 
 
@@ -151,6 +173,15 @@ public class NewsListActivity extends BaseActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            processGoogleSignInResult(result);
+        }
     }
 
     @Override
@@ -229,5 +260,32 @@ public class NewsListActivity extends BaseActivity
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(getApplicationContext(), "onConnectionFailed : " + connectionResult.getErrorMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.fab)
+    public void onTapFab(View view) {
+        signInWithGoogle();
+    }
+
+    private void signInWithGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+    }
+
+    private void processGoogleSignInResult(GoogleSignInResult signInResult) {
+        if (signInResult.isSuccess()) {
+            // Google Sign-In was successful, authenticate with Firebase
+            GoogleSignInAccount account = signInResult.getSignInAccount();
+            mPresenter.onSuccessGoogleSignIn(account);
+        } else {
+            // Google Sign-In failed
+            Log.e(SFCNewsApp.LOG_TAG, "Google Sign-In failed.");
+            Snackbar.make(swipeRefreshLayout, "Your Google sign-in failed.", Snackbar.LENGTH_LONG).show();
+        }
     }
 }

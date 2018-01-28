@@ -1,0 +1,133 @@
+{
+	"info": {
+		"name": "PADC-3-MM-News",
+		"_postman_id": "7b5af646-111e-2c5f-0b63-815dce2267e0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get News",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "page",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "access_token",
+							"value": "b002c7e1a528b7cb460933fc2875e916",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://padcmyanmar.com/padc-3/mm-news/apis/v1/getMMNews.php",
+					"protocol": "http",
+					"host": [
+						"padcmyanmar",
+						"com"
+					],
+					"path": [
+						"padc-3",
+						"mm-news",
+						"apis",
+						"v1",
+						"getMMNews.php"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phoneNo",
+							"value": "+95783422211",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://padcmyanmar.com/padc-3/mm-news/apis/v1/login.php",
+					"protocol": "http",
+					"host": [
+						"padcmyanmar",
+						"com"
+					],
+					"path": [
+						"padc-3",
+						"mm-news",
+						"apis",
+						"v1",
+						"login.php"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phoneNo",
+							"value": "+95783422211",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Phyo Phone Myint",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://padcmyanmar.com/padc-3/mm-news/apis/v1/register.php",
+					"protocol": "http",
+					"host": [
+						"padcmyanmar",
+						"com"
+					],
+					"path": [
+						"padc-3",
+						"mm-news",
+						"apis",
+						"v1",
+						"register.php"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}
