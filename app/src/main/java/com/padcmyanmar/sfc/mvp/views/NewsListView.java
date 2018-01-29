@@ -19,4 +19,8 @@ public interface NewsListView {
     void navigateToNewsDetails(NewsVO news);
 
     Context getContext();
+
+    void showAddNewsScreen();
+
+    void signInGoogle();
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.padcmyanmar.sfc.SFCNewsApp;
 import com.padcmyanmar.sfc.data.models.NewsModel;
+import com.padcmyanmar.sfc.mvp.presenters.AddNewsPresenter;
 import com.padcmyanmar.sfc.mvp.presenters.NewsListPresenter;
 import com.padcmyanmar.sfc.network.MMNewsDataAgent;
 import com.padcmyanmar.sfc.network.MMNewsDataAgentImpl;
@@ -42,5 +43,10 @@ public class SFCAppModule {
     @Provides
     public NewsListPresenter provideNewsListPresenter() {
         return new NewsListPresenter();
+    }
+
+    @Provides
+    public AddNewsPresenter provideAddNewsPresenter() {
+        return new AddNewsPresenter();
     }
 }

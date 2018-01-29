@@ -43,4 +43,10 @@
         <item name="android:foreground">@drawable/bg_ripple_accent</item>
         <item name="android:textColor">@color/accent</item>
     </style>
+
+    <style name="AppDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:background">@color/white_ish</item>
+        <item name="android:textColor">@color/black_ish</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
 </resources>

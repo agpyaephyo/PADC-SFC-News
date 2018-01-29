@@ -94,26 +94,25 @@ public class NewsListActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                        */
+
 
                 //drawerLayout.openDrawer(GravityCompat.START);
 
-                /*
                 Intent intent = LoginRegisterActivity.newIntent(getApplicationContext());
                 startActivity(intent);
-                */
 
                 Date today = new Date();
                 Log.d(SFCNewsApp.LOG_TAG, "Today (with default format) : " + today.toString());
             }
         });
+        */
 
         rvNews.setEmptyView(vpEmptyNews);
         rvNews.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -263,18 +262,26 @@ public class NewsListActivity extends BaseActivity
     }
 
     @Override
+    public void showAddNewsScreen() {
+        Intent intent = AddNewsActivity.newIntent(getApplicationContext());
+        startActivity(intent);
+    }
+
+    @Override
+    public void signInGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+    }
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "onConnectionFailed : " + connectionResult.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     @OnClick(R.id.fab)
     public void onTapFab(View view) {
-        signInWithGoogle();
-    }
-
-    private void signInWithGoogle() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+        //signInWithGoogle();
+        mPresenter.onStartPublishingNews();
     }
 
     private void processGoogleSignInResult(GoogleSignInResult signInResult) {

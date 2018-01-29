@@ -1,8 +1,10 @@
 package com.padcmyanmar.sfc.dagger;
 
 import com.padcmyanmar.sfc.SFCNewsApp;
+import com.padcmyanmar.sfc.activities.AddNewsActivity;
 import com.padcmyanmar.sfc.activities.NewsListActivity;
 import com.padcmyanmar.sfc.data.models.NewsModel;
+import com.padcmyanmar.sfc.mvp.presenters.AddNewsPresenter;
 import com.padcmyanmar.sfc.mvp.presenters.NewsListPresenter;
 
 import javax.inject.Singleton;
@@ -23,4 +25,8 @@ public interface SFCAppComponent {
     void inject(NewsListPresenter newsListPresenter);
 
     void inject(NewsListActivity newsListActivity);
+
+    void inject(AddNewsPresenter addNewsPresenter);
+
+    void inject(AddNewsActivity addNewsActivity);
 }

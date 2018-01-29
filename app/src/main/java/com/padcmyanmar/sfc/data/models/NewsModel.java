@@ -2,12 +2,14 @@ package com.padcmyanmar.sfc.data.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -19,6 +21,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.padcmyanmar.sfc.SFCNewsApp;
 import com.padcmyanmar.sfc.data.vo.FavoriteActionVO;
 import com.padcmyanmar.sfc.data.vo.NewsVO;
@@ -34,6 +39,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -126,7 +132,9 @@ public class NewsModel {
             newsCVs[index] = news.parseToContentValues();
 
             PublicationVO publication = news.getPublication();
-            publicationCVList.add(publication.parseToContentValues());
+            if (publication != null) {
+                publicationCVList.add(publication.parseToContentValues());
+            }
 
             for (String imageUrl : news.getImages()) {
                 ContentValues imagesInNewsCV = new ContentValues();
@@ -203,6 +211,7 @@ public class NewsModel {
                             delegate.onFailureAuthenticate(task.getException().getMessage());
                         } else {
                             Log.d(SFCNewsApp.LOG_TAG, "signInWithCredential - successful");
+                            mFirebaseUser = mFirebaseAuth.getCurrentUser();
                             delegate.onSuccessAuthenticate(signInAccount);
                         }
                     }
@@ -216,9 +225,65 @@ public class NewsModel {
                 });
     }
 
+    public void uploadFile(String fileToUpload, final UploadFileCallback uploadFileCallback) {
+        Uri file = Uri.parse(fileToUpload);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference pathToUpload = storage.getReferenceFromUrl("gs://mm-news-padc-myanmar.appspot.com/user_news_images");
+
+        StorageReference uploadingFile = pathToUpload.child(file.getLastPathSegment());
+        UploadTask uploadTask = uploadingFile.putFile(file);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                uploadFileCallback.onUploadFailed(e.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri uploadedImageUrl = taskSnapshot.getDownloadUrl();
+                Log.d(SFCNewsApp.LOG_TAG, "Uploaded Image Url : " + uploadedImageUrl);
+                uploadFileCallback.onUploadSucceeded(uploadedImageUrl.toString());
+            }
+        });
+
+    }
+
+    public boolean isUserAuthenticate() {
+        return mFirebaseUser != null;
+    }
+
+    public void publishNews(String photoPath, final String newsContent) {
+        uploadFile(photoPath, new UploadFileCallback() {
+            @Override
+            public void onUploadSucceeded(String uploadedPaths) {
+                List<String> images = new ArrayList<>();
+                images.add(uploadedPaths);
+
+                NewsVO newsToPublish = new NewsVO(newsContent, newsContent, images, new Date().toString());
+
+                newsToPublish.setPublication(PublicationVO.dummyPublication());
+                DatabaseReference mmNewsDBR = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference mmNewsNodeDBR = mmNewsDBR.child(MM_NEWS);
+                mmNewsNodeDBR.child(newsToPublish.getPostedDate()).setValue(newsToPublish);
+
+            }
+
+            @Override
+            public void onUploadFailed(String msg) {
+
+            }
+        });
+    }
+
     public interface UserAuthenticateDelegate {
         void onSuccessAuthenticate(GoogleSignInAccount account);
 
         void onFailureAuthenticate(String errorMsg);
+    }
+
+    public interface UploadFileCallback {
+        void onUploadSucceeded(String uploadedPaths);
+
+        void onUploadFailed(String msg);
     }
 }

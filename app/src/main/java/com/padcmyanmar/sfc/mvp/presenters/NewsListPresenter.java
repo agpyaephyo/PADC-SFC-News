@@ -112,4 +112,12 @@ public class NewsListPresenter extends BasePresenter<NewsListView> implements Ne
             }
         });
     }
+
+    public void onStartPublishingNews() {
+        if(mNewsModel.isUserAuthenticate()) {
+            mView.showAddNewsScreen();
+        } else {
+            mView.signInGoogle();
+        }
+    }
 }

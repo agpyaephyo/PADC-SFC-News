@@ -43,6 +43,17 @@ public class NewsVO {
     @SerializedName("sent-tos")
     private List<SentToVO> sentToActions;
 
+    public NewsVO() {
+    }
+
+    public NewsVO(String brief, String details, List<String> images, String postedDate) {
+        this.newsId = String.valueOf(System.currentTimeMillis() / 1000);
+        this.brief = brief;
+        this.details = details;
+        this.images = images;
+        this.postedDate = postedDate;
+    }
+
     public String getNewsId() {
         return newsId;
     }
@@ -68,6 +79,10 @@ public class NewsVO {
 
     public PublicationVO getPublication() {
         return publication;
+    }
+
+    public void setPublication(PublicationVO publication) {
+        this.publication = publication;
     }
 
     public List<FavoriteActionVO> getFavoriteActions() {
@@ -97,7 +112,9 @@ public class NewsVO {
         contentValues.put(MMNewsContract.NewsEntry.COLUMN_BRIEF, brief);
         contentValues.put(MMNewsContract.NewsEntry.COLUMN_DETAILS, details);
         contentValues.put(MMNewsContract.NewsEntry.COLUMN_POSTED_DATE, postedDate);
-        contentValues.put(MMNewsContract.NewsEntry.COLUMN_PUBLICATION_ID, publication.getPublicationId());
+        if (publication != null) {
+            contentValues.put(MMNewsContract.NewsEntry.COLUMN_PUBLICATION_ID, publication.getPublicationId());
+        }
         return contentValues;
     }
 

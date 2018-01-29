@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:contentInsetStartWithNavigation="@dimen/toolbar_margin"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_medium_2"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <EditText
+            android:id="@+id/et_news"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/bg_rounded"
+            android:gravity="top"
+            android:padding="@dimen/margin_medium_2" />
+
+        <FrameLayout
+            android:id="@+id/fl_news_photo"
+            android:layout_width="@dimen/items_photo_size"
+            android:layout_height="@dimen/items_photo_size"
+            android:layout_below="@id/et_news"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <include
+                android:id="@+id/vp_added_photo"
+                layout="@layout/view_pod_added_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
+
+            <include
+                android:id="@+id/vp_add_photo"
+                layout="@layout/view_pod_add_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btn_add_news"
+            style="@style/AccentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/et_news"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/btn_add_news"
+            android:textColor="@color/primary_text" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
