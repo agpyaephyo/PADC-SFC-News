@@ -42,9 +42,10 @@
 
             <include
                 android:id="@+id/vp_empty_news"
-                layout="@layout/view_pod_empty"
+                layout="@layout/view_pod_empty_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
 
         </RelativeLayout>
 

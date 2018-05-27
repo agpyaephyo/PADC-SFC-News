@@ -58,6 +58,7 @@ public class MMNewsDataAgentImpl implements MMNewsDataAgent {
                 GetNewsResponse getNewsResponse = response.body();
                 if (getNewsResponse != null
                         && getNewsResponse.getNewsList().size() > 0) {
+
                     RestApiEvents.NewsDataLoadedEvent newsDataLoadedEvent = new RestApiEvents.NewsDataLoadedEvent(
                             getNewsResponse.getPageNo(), getNewsResponse.getNewsList());
                     EventBus.getDefault().post(newsDataLoadedEvent);

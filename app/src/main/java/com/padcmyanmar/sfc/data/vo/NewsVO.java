@@ -2,6 +2,7 @@ package com.padcmyanmar.sfc.data.vo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,4 +37,43 @@ public class NewsVO {
 
     @SerializedName("sent-tos")
     private List<SentToVO> sentToActions;
+
+    public String getNewsId() {
+        return newsId;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public List<String> getImages() {
+        if(images == null)
+            return new ArrayList<>();
+
+        return images;
+    }
+
+    public String getPostedDate() {
+        return postedDate;
+    }
+
+    public PublicationVO getPublication() {
+        return publication;
+    }
+
+    public List<FavoriteActionVO> getFavoriteActions() {
+        return favoriteActions;
+    }
+
+    public List<CommentActionVO> getCommentActions() {
+        return commentActions;
+    }
+
+    public List<SentToVO> getSentToActions() {
+        return sentToActions;
+    }
 }

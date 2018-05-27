@@ -54,7 +54,7 @@
             android:foreground="@drawable/bg_ripple_primary"
             />
 
-        <TextView
+        <org.mmtextview.components.MMTextView
             android:id="@+id/tv_brief_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
