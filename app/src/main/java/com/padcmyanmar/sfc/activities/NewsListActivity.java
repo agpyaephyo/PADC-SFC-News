@@ -91,13 +91,6 @@ public class NewsListActivity extends BaseActivity
         });
 
         rvNews.addOnScrollListener(mSmartScrollListener);
-
-        Intent intent = new Intent(getApplicationContext(), NewsDetailsActivity.class);
-        intent.putExtra("news_id", 123);
-        intent.putExtra("newsId", 123);
-        intent.putExtra("NewsId", 123);
-        intent.putExtra("NEWSID", 123);
-        startActivity(intent);
     }
 
     @Override
