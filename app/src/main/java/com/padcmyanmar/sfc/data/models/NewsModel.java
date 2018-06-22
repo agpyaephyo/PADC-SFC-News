@@ -11,7 +11,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by aung on 12/3/17.
@@ -21,12 +23,12 @@ public class NewsModel {
 
     private static NewsModel objInstance;
 
-    private List<NewsVO> mNews;
+    private Map<String, NewsVO> mNewsMap;
     private int mmNewsPageIndex = 1;
 
     private NewsModel() {
         EventBus.getDefault().register(this);
-        mNews = new ArrayList<>();
+        mNewsMap = new HashMap<>();
     }
 
     public static NewsModel getInstance() {
@@ -40,9 +42,16 @@ public class NewsModel {
         MMNewsDataAgentImpl.getInstance().loadMMNews(AppConstants.ACCESS_TOKEN, mmNewsPageIndex);
     }
 
+    public NewsVO getNewsById(String newsId) {
+        return mNewsMap.get(newsId);
+    }
+
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
-        mNews.addAll(event.getLoadNews());
+        for(NewsVO news : event.getLoadNews()) {
+            mNewsMap.put(news.getNewsId(), news);
+        }
+
         mmNewsPageIndex = event.getLoadedPageIndex() + 1;
     }
 }

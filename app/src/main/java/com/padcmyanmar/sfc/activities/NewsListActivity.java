@@ -18,21 +18,26 @@ import com.padcmyanmar.sfc.adapters.NewsAdapter;
 import com.padcmyanmar.sfc.components.EmptyViewPod;
 import com.padcmyanmar.sfc.components.SmartRecyclerView;
 import com.padcmyanmar.sfc.components.SmartScrollListener;
+import com.padcmyanmar.sfc.data.models.NewsModel;
+import com.padcmyanmar.sfc.data.vo.NewsVO;
 import com.padcmyanmar.sfc.delegates.NewsItemDelegate;
 import com.padcmyanmar.sfc.events.RestApiEvents;
 import com.padcmyanmar.sfc.events.TapNewsEvent;
+import com.padcmyanmar.sfc.mvp.presenters.NewsListPresenter;
+import com.padcmyanmar.sfc.mvp.views.NewsListView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsListActivity extends BaseActivity
-        implements NewsItemDelegate {
+        implements NewsListView {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -47,11 +52,16 @@ public class NewsListActivity extends BaseActivity
 
     private NewsAdapter mNewsAdapter;
 
+    private NewsListPresenter mPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         ButterKnife.bind(this, this);
+
+        mPresenter = new NewsListPresenter(this);
+        mPresenter.onCreate();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,7 +89,7 @@ public class NewsListActivity extends BaseActivity
 
         rvNews.setEmptyView(vpEmptyNews);
         rvNews.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        mNewsAdapter = new NewsAdapter(getApplicationContext(), this);
+        mNewsAdapter = new NewsAdapter(getApplicationContext(), mPresenter);
         rvNews.setAdapter(mNewsAdapter);
 
         mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
@@ -91,6 +101,36 @@ public class NewsListActivity extends BaseActivity
         });
 
         rvNews.addOnScrollListener(mSmartScrollListener);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPresenter.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPresenter.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
     }
 
     @Override
@@ -116,58 +156,18 @@ public class NewsListActivity extends BaseActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
+    public void displayNewsList(List<NewsVO> newsList) {
+        mNewsAdapter.appendNewData(newsList);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    public void displayErrorMsg(String errorMsg) {
+        Snackbar.make(rvNews, errorMsg, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override
-    public void onTapComment() {
-
-    }
-
-    @Override
-    public void onTapSendTo() {
-
-    }
-
-    @Override
-    public void onTapFavorite() {
-
-    }
-
-    @Override
-    public void onTapStatistics() {
-
-    }
-
-    @Override
-    public void onTapNews() {
-        Intent intent = NewsDetailsActivity.newIntent(getApplicationContext());
+    public void launchNewsDetailsScreen(String newsId) {
+        Intent intent = NewsDetailsActivity.newIntent(getApplicationContext(), newsId);
         startActivity(intent);
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTapNewsEvent(TapNewsEvent event) {
-        event.getNewsId();
-        Intent intent = NewsDetailsActivity.newIntent(getApplicationContext());
-        startActivity(intent);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
-        mNewsAdapter.appendNewData(event.getLoadNews());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onErrorInvokingAPI(RestApiEvents.ErrorInvokingAPIEvent event) {
-        Snackbar.make(rvNews, event.getErrorMsg(), Snackbar.LENGTH_INDEFINITE).show();
-    }
-
 }
