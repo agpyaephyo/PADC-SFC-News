@@ -15,5 +15,7 @@ public class SFCNewsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        NewsModel.initNewsModel(getApplicationContext());
     }
 }

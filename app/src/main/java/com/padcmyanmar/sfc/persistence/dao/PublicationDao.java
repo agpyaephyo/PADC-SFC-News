@@ -14,6 +14,9 @@ public interface PublicationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     String insertPublication(PublicationVO publication);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    String[] insertPublications(PublicationVO... publications);
+
     @Query("SELECT * FROM publication WHERE id = :publicationId")
-    ActedUserVO getPublicationById(String publicationId);
+    PublicationVO getPublicationById(String publicationId);
 }

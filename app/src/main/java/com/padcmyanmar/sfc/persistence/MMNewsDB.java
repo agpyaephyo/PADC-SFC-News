@@ -18,17 +18,15 @@ import com.padcmyanmar.sfc.persistence.dao.NewsDao;
 import com.padcmyanmar.sfc.persistence.dao.PublicationDao;
 import com.padcmyanmar.sfc.persistence.dao.SentToActionDao;
 
-import org.w3c.dom.Comment;
-
 @Database(entities = {
         ActedUserVO.class,
         FavoriteActionVO.class, CommentActionVO.class, SentToVO.class,
         PublicationVO.class, NewsVO.class
 }, version = 1, exportSchema = false)
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class MMNewsDB extends RoomDatabase {
 
     private static final String DB_NAME = "SFC-News.DB";
-    private static AppDatabase INSTANCE;
+    private static MMNewsDB INSTANCE;
 
     public abstract ActedUserDao actedUserDao();
     public abstract FavoriteActionDao favoriteActionDao();
@@ -37,9 +35,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PublicationDao publicationDao();
     public abstract NewsDao newsDao();
 
-    public static AppDatabase getDatabase(Context context) {
+    public static MMNewsDB getDatabase(Context context) {
         if(INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
+            INSTANCE = Room.databaseBuilder(context, MMNewsDB.class, DB_NAME)
                     .allowMainThreadQueries() //Remove this after testing. Access to DB should always be from background thread.
                     .build();
         }

@@ -15,7 +15,7 @@ import java.util.List;
 public interface NewsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String insertNews(NewsVO newsVO);
+    String[] insertNews(NewsVO... newsVO);
 
     @Query("SELECT * FROM news")
     List<NewsVO> getAllNews();

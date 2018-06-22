@@ -37,4 +37,6 @@ public class PublicationVO {
     public String getLogo() {
         return logo;
     }
+
+
 }

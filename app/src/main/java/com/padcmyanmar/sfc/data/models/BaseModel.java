@@ -1,7 +1,10 @@
 package com.padcmyanmar.sfc.data.models;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.padcmyanmar.sfc.network.MMNewsAPI;
+import com.padcmyanmar.sfc.persistence.MMNewsDB;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,8 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class BaseModel {
 
     protected MMNewsAPI mTheApi;
+    protected MMNewsDB mTheDB;
 
-    public BaseModel() {
+    protected BaseModel(Context context) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -27,5 +31,6 @@ public abstract class BaseModel {
                 .build();
 
         mTheApi = retrofit.create(MMNewsAPI.class);
+        mTheDB = MMNewsDB.getDatabase(context);
     }
 }
