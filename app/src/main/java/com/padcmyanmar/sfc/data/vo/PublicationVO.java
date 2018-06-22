@@ -13,15 +13,17 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "publication")
 public class PublicationVO {
 
+    @SerializedName("publication-id")
     @PrimaryKey
     @ColumnInfo(name = "id")
-    @SerializedName("publication-id")
     private String publicationId;
 
     @SerializedName("title")
+    @ColumnInfo(name = "title")
     private String title;
 
     @SerializedName("logo")
+    @ColumnInfo(name = "logo")
     private String logo;
 
     public String getPublicationId() {
