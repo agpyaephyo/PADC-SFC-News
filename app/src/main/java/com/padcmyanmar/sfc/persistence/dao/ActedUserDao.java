@@ -16,6 +16,6 @@ public interface ActedUserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertActedUsers(ActedUserVO... actedUsers);
 
-    @Query("SELECT * FROM acted_users WHERE id = :userId")
+    @Query("SELECT * FROM acted_users WHERE user_id = :userId")
     ActedUserVO getActedUserById(String userId);
 }

@@ -20,6 +20,6 @@ public interface NewsDao {
     @Query("SELECT * FROM news")
     List<NewsVO> getAllNews();
 
-    @Query("SELECT * FROM news WHERE id = :newsId")
+    @Query("SELECT * FROM news WHERE news_id = :newsId")
     NewsVO getNewsById(String newsId);
 }

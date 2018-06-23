@@ -17,6 +17,6 @@ public interface PublicationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertPublications(PublicationVO... publications);
 
-    @Query("SELECT * FROM publication WHERE id = :publicationId")
+    @Query("SELECT * FROM publication WHERE publication_id = :publicationId")
     PublicationVO getPublicationById(String publicationId);
 }
