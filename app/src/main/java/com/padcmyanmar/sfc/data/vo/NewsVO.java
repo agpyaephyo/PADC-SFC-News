@@ -5,10 +5,12 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
+import com.padcmyanmar.sfc.persistence.typeconvertors.NewsImagesTypeConvertor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +18,15 @@ import java.util.List;
 /**
  * Created by aung on 12/2/17.
  */
-@Entity(tableName = "news", foreignKeys = {
-        @ForeignKey(entity = PublicationVO.class,
-                parentColumns = "id",
-                childColumns = "publication_id", deferred = true),
-})
+@Entity(tableName = "news")
+@TypeConverters(NewsImagesTypeConvertor.class)
 public class NewsVO {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
     @SerializedName("news-id")
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "news_id")
     private String newsId;
 
     @SerializedName("brief")
@@ -63,6 +64,14 @@ public class NewsVO {
     @Ignore
     private List<SentToVO> sentToActions;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getNewsId() {
         return newsId;
     }
@@ -91,14 +100,20 @@ public class NewsVO {
     }
 
     public List<FavoriteActionVO> getFavoriteActions() {
+        if(favoriteActions == null)
+            return new ArrayList<>();
         return favoriteActions;
     }
 
     public List<CommentActionVO> getCommentActions() {
+        if(commentActions == null)
+            return new ArrayList<>();
         return commentActions;
     }
 
     public List<SentToVO> getSentToActions() {
+        if(sentToActions == null)
+            return new ArrayList<>();
         return sentToActions;
     }
 

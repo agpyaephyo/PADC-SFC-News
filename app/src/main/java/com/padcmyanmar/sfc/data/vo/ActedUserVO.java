@@ -3,6 +3,7 @@ package com.padcmyanmar.sfc.data.vo;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,9 +13,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "acted_users")
 public class ActedUserVO {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
     @SerializedName("user-id")
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "user_id")
     private String userId;
 
     @SerializedName("user-name")
@@ -24,6 +27,14 @@ public class ActedUserVO {
     @SerializedName("profile-image")
     @ColumnInfo(name = "profile_image")
     private String profileImage;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;

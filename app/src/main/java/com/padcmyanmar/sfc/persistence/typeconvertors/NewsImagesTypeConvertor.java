@@ -19,7 +19,9 @@ public class NewsImagesTypeConvertor {
         for (String image : imageList) {
             stringBuilder.append(image).append(",");
         }
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        if (stringBuilder.length() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
         return stringBuilder.toString();
     }
 }

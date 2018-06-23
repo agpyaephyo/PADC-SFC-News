@@ -3,6 +3,7 @@ package com.padcmyanmar.sfc.data.models;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.padcmyanmar.sfc.network.MMNewsAPI;
 import com.padcmyanmar.sfc.persistence.MMNewsDB;
 
@@ -27,6 +28,7 @@ public abstract class BaseModel {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://padcmyanmar.com/padc-3/mm-news/apis/")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
 

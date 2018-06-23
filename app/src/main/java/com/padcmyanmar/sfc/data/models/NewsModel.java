@@ -122,22 +122,22 @@ public class NewsModel extends BaseModel {
         }
 
         //Actual Inserts - with sequence
-        String[] insertedUsers = mTheDB.actedUserDao().insertActedUsers(actedUserList.toArray(new ActedUserVO[0]));
+        long[] insertedUsers = mTheDB.actedUserDao().insertActedUsers(actedUserList.toArray(new ActedUserVO[0]));
         Log.d(SFCNewsApp.LOG_TAG, "insertedUsers : " + insertedUsers);
 
-        String[] insertedSentTos = mTheDB.sentToActionDao().insertSentToActions(sentToList.toArray(new SentToVO[0]));
+        long[] insertedSentTos = mTheDB.sentToActionDao().insertSentToActions(sentToList.toArray(new SentToVO[0]));
         Log.d(SFCNewsApp.LOG_TAG, "insertedSentTos : " + insertedSentTos);
 
-        String[] insertedComments = mTheDB.commentActionDao().insertCommentActions(commentActionList.toArray(new CommentActionVO[0]));
+        long[] insertedComments = mTheDB.commentActionDao().insertCommentActions(commentActionList.toArray(new CommentActionVO[0]));
         Log.d(SFCNewsApp.LOG_TAG, "insertedComments : " + insertedComments);
 
-        String[] insertedFavorites = mTheDB.favoriteActionDao().insertFavoriteActions(favoriteActionList.toArray(new FavoriteActionVO[0]));
+        long[] insertedFavorites = mTheDB.favoriteActionDao().insertFavoriteActions(favoriteActionList.toArray(new FavoriteActionVO[0]));
         Log.d(SFCNewsApp.LOG_TAG, "insertedFavorites : " + insertedFavorites);
 
-        String[] insertedPublications = mTheDB.publicationDao().insertPublications(publicationList.toArray(new PublicationVO[0]));
+        long[] insertedPublications = mTheDB.publicationDao().insertPublications(publicationList.toArray(new PublicationVO[0]));
         Log.d(SFCNewsApp.LOG_TAG, "insertedPublications : " + insertedPublications);
 
-        String[] insertedNews = mTheDB.newsDao().insertNews(newsList.toArray(new NewsVO[0]));
+        long[] insertedNews = mTheDB.newsDao().insertNews(newsList.toArray(new NewsVO[0]));
         Log.d(SFCNewsApp.LOG_TAG, "insertedNews : " + insertedNews);
     }
 

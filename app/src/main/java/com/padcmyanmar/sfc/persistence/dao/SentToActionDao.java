@@ -14,7 +14,7 @@ import java.util.List;
 public interface SentToActionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String[] insertSentToActions(SentToVO... sentToVOS);
+    long[] insertSentToActions(SentToVO... sentToVOS);
 
     @Query("SELECT * FROM sent_tos WHERE news_id = :newsId")
     List<SentToVO> getSentTosByNewsId(String newsId);

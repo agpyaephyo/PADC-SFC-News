@@ -11,10 +11,10 @@ import com.padcmyanmar.sfc.data.vo.ActedUserVO;
 public interface ActedUserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String insertActedUser(ActedUserVO actedUser);
+    long insertActedUser(ActedUserVO actedUser);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String[] insertActedUsers(ActedUserVO... actedUsers);
+    long[] insertActedUsers(ActedUserVO... actedUsers);
 
     @Query("SELECT * FROM acted_users WHERE id = :userId")
     ActedUserVO getActedUserById(String userId);

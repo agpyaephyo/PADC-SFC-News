@@ -13,7 +13,7 @@ import java.util.List;
 public interface FavoriteActionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String[] insertFavoriteActions(FavoriteActionVO... favoriteActionVOS);
+    long[] insertFavoriteActions(FavoriteActionVO... favoriteActionVOS);
 
     @Query("SELECT * FROM favorites WHERE news_id = :newsId")
     List<FavoriteActionVO> getFavoriteActionsByNewsId(String newsId);

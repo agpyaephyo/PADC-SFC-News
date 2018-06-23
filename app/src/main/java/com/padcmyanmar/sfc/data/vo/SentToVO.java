@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
@@ -14,9 +15,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "sent_tos")
 public class SentToVO {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
     @SerializedName("send-to-id")
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "sent_to_id")
     private String sendToId;
 
     @SerializedName("sent-date")
@@ -39,6 +42,14 @@ public class SentToVO {
 
     @ColumnInfo(name = "news_id")
     private transient String newsId;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getSendToId() {
         return sendToId;

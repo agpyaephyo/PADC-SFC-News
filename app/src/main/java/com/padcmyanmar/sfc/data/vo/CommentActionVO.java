@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
@@ -14,9 +15,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "comments")
 public class CommentActionVO {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
     @SerializedName("comment-id")
-    @PrimaryKey
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "comment_id")
     private String commentId;
 
     @SerializedName("comment")
@@ -36,6 +39,14 @@ public class CommentActionVO {
 
     @ColumnInfo(name = "news_id")
     private transient String newsId;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getCommentId() {
         return commentId;

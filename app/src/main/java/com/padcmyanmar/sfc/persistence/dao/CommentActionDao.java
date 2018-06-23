@@ -14,7 +14,7 @@ import java.util.List;
 public interface CommentActionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String[] insertCommentActions(CommentActionVO... commentActionVOS);
+    long[] insertCommentActions(CommentActionVO... commentActionVOS);
 
     @Query("SELECT * FROM comments WHERE news_id = :newsId")
     List<CommentActionVO> getCommentActionsByNewsId(String newsId);

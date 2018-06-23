@@ -12,10 +12,10 @@ import com.padcmyanmar.sfc.data.vo.PublicationVO;
 public interface PublicationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String insertPublication(PublicationVO publication);
+    long insertPublication(PublicationVO publication);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    String[] insertPublications(PublicationVO... publications);
+    long[] insertPublications(PublicationVO... publications);
 
     @Query("SELECT * FROM publication WHERE id = :publicationId")
     PublicationVO getPublicationById(String publicationId);
