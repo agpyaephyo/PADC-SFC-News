@@ -3,6 +3,7 @@ package com.padcmyanmar.sfc.data.models;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.padcmyanmar.sfc.SFCNewsApp;
@@ -22,7 +23,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 
 /**
  * Created by aung on 12/3/17.
@@ -137,25 +137,63 @@ public class NewsModel extends BaseModel {
         Log.d(SFCNewsApp.LOG_TAG, "insertedNews : " + insertedNews);
     }
 
+    public LiveData<NewsVO> getNewsByIdLD(final String newsId) {
+        final MutableLiveData<NewsVO> newsLD = new MutableLiveData<>();
+        mTheDB.newsDao().getNewsByIdLD(newsId).observeForever(new android.arch.lifecycle.Observer<NewsVO>() {
+            @Override
+            public void onChanged(@Nullable NewsVO news) {
+                if (news != null) {
+                    news.setFavoriteActions(mTheDB.favoriteActionDao().getFavoriteActionsByNewsId(newsId));
+                    for (FavoriteActionVO favoriteAction : news.getFavoriteActions()) {
+                        //TODO
+                        favoriteAction.setActedUser(mTheDB.actedUserDao().getActedUserById(favoriteAction.getActedUserId()));
+                    }
+
+                    news.setCommentActions(mTheDB.commentActionDao().getCommentActionsByNewsId(newsId));
+                    for (CommentActionVO commentAction : news.getCommentActions()) {
+                        //TODO
+                        commentAction.setActedUser(mTheDB.actedUserDao().getActedUserById(commentAction.getActedUserId()));
+                    }
+
+                    news.setSentToActions(mTheDB.sentToActionDao().getSentTosByNewsId(newsId));
+                    for (SentToVO sentTo : news.getSentToActions()) {
+                        //TODO
+                        sentTo.setSender(mTheDB.actedUserDao().getActedUserById(sentTo.getSenderId()));
+                        sentTo.setReceiver(mTheDB.actedUserDao().getActedUserById(sentTo.getReceiverId()));
+                    }
+
+                    //TODO
+                    news.setPublication(mTheDB.publicationDao().getPublicationById(news.getPublicationId()));
+                    newsLD.setValue(news);
+                }
+            }
+        });
+        return newsLD;
+    }
+
     public NewsVO getNewsById(String newsId) {
-        //Retrieve with sequence
         NewsVO news = mTheDB.newsDao().getNewsById(newsId);
+
         news.setFavoriteActions(mTheDB.favoriteActionDao().getFavoriteActionsByNewsId(newsId));
         for (FavoriteActionVO favoriteAction : news.getFavoriteActions()) {
+            //TODO
             favoriteAction.setActedUser(mTheDB.actedUserDao().getActedUserById(favoriteAction.getActedUserId()));
         }
 
         news.setCommentActions(mTheDB.commentActionDao().getCommentActionsByNewsId(newsId));
         for (CommentActionVO commentAction : news.getCommentActions()) {
+            //TODO
             commentAction.setActedUser(mTheDB.actedUserDao().getActedUserById(commentAction.getActedUserId()));
         }
 
         news.setSentToActions(mTheDB.sentToActionDao().getSentTosByNewsId(newsId));
         for (SentToVO sentTo : news.getSentToActions()) {
+            //TODO
             sentTo.setSender(mTheDB.actedUserDao().getActedUserById(sentTo.getSenderId()));
             sentTo.setReceiver(mTheDB.actedUserDao().getActedUserById(sentTo.getReceiverId()));
         }
 
+        //TODO
         news.setPublication(mTheDB.publicationDao().getPublicationById(news.getPublicationId()));
         return news;
     }

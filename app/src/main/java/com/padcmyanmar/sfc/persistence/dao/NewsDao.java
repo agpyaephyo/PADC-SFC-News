@@ -1,5 +1,6 @@
 package com.padcmyanmar.sfc.persistence.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -22,4 +23,7 @@ public interface NewsDao {
 
     @Query("SELECT * FROM news WHERE news_id = :newsId")
     NewsVO getNewsById(String newsId);
+
+    @Query("SELECT * FROM news WHERE news_id = :newsId")
+    LiveData<NewsVO> getNewsByIdLD(String newsId);
 }

@@ -9,17 +9,12 @@ import com.padcmyanmar.sfc.mvp.views.NewsDetailsView;
 
 public class NewsDetailsPresenter extends BasePresenter<NewsDetailsView> {
 
-    private MutableLiveData<NewsVO> mNewsLD;
-
     @Override
     public void initPresenter(NewsDetailsView mView) {
         super.initPresenter(mView);
-        mNewsLD = new MutableLiveData<>();
     }
 
     public LiveData<NewsVO> onUiReady(String newsId) {
-        NewsVO news = NewsModel.getInstance().getNewsById(newsId);
-        mNewsLD.setValue(news);
-        return mNewsLD;
+        return NewsModel.getInstance().getNewsByIdLD(newsId);
     }
 }
