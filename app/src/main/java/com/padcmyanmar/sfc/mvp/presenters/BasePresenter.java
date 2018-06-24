@@ -1,36 +1,25 @@
 package com.padcmyanmar.sfc.mvp.presenters;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
+
 import com.padcmyanmar.sfc.mvp.views.BaseView;
 
-public abstract class BasePresenter<T extends BaseView> {
+import rx.Observer;
+import rx.subjects.PublishSubject;
+
+public abstract class BasePresenter<T extends BaseView> extends ViewModel {
 
     protected T mView;
+    protected MutableLiveData<String> mErrorLD;
 
-    public BasePresenter(T mView) {
+    public void initPresenter(final T mView) {
         this.mView = mView;
+        mErrorLD = new MutableLiveData<>();
     }
 
-    public void onCreate() {
-
-    }
-
-    public void onStart() {
-
-    }
-
-    public void onResume() {
-
-    }
-
-    public void onPause() {
-
-    }
-
-    public void onStop() {
-
-    }
-
-    public void onDestroy() {
-
+    public LiveData<String> getErrorLD() {
+        return mErrorLD;
     }
 }

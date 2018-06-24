@@ -1,5 +1,7 @@
 package com.padcmyanmar.sfc.data.models;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.util.Log;
 
@@ -10,11 +12,8 @@ import com.padcmyanmar.sfc.data.vo.FavoriteActionVO;
 import com.padcmyanmar.sfc.data.vo.NewsVO;
 import com.padcmyanmar.sfc.data.vo.PublicationVO;
 import com.padcmyanmar.sfc.data.vo.SentToVO;
-import com.padcmyanmar.sfc.events.RestApiEvents;
 import com.padcmyanmar.sfc.network.reponses.GetNewsResponse;
 import com.padcmyanmar.sfc.utils.AppConstants;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by aung on 12/3/17.
@@ -49,7 +49,8 @@ public class NewsModel extends BaseModel {
         return objInstance;
     }
 
-    public void startLoadingMMNews() {
+    public void startLoadingMMNews(final MutableLiveData<List<NewsVO>> newsListLD,
+                                   final MutableLiveData<String> errorPS) {
         mTheApi.loadMMNews(mmNewsPageIndex, AppConstants.ACCESS_TOKEN)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,27 +61,22 @@ public class NewsModel extends BaseModel {
                     }
 
                     @Override
-                    public void onNext(GetNewsResponse getNewsResponse) {
-                        if (getNewsResponse != null
-                                && getNewsResponse.getNewsList().size() > 0) {
+                    public void onNext(GetNewsResponse newsResponse) {
+                        if (newsResponse != null
+                                && newsResponse.getNewsList().size() > 0) {
 
-                            persistNewsList(getNewsResponse.getNewsList());
-                            mmNewsPageIndex = getNewsResponse.getPageNo() + 1;
+                            persistNewsList(newsResponse.getNewsList());
+                            mmNewsPageIndex = newsResponse.getPageNo() + 1;
 
-                            RestApiEvents.NewsDataLoadedEvent newsDataLoadedEvent = new RestApiEvents.NewsDataLoadedEvent(
-                                    getNewsResponse.getPageNo(), getNewsResponse.getNewsList());
-                            EventBus.getDefault().post(newsDataLoadedEvent);
+                            newsListLD.setValue(newsResponse.getNewsList());
                         } else {
-                            RestApiEvents.ErrorInvokingAPIEvent errorEvent
-                                    = new RestApiEvents.ErrorInvokingAPIEvent("No data could be loaded for now. Pls try again later.");
-                            EventBus.getDefault().post(errorEvent);
+                            errorPS.setValue("No data could be loaded for now. Pls try again later.");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        RestApiEvents.ErrorInvokingAPIEvent errorEvent = new RestApiEvents.ErrorInvokingAPIEvent(e.getMessage());
-                        EventBus.getDefault().post(errorEvent);
+                        errorPS.setValue(e.getMessage());
                     }
 
                     @Override

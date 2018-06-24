@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface NewsListView extends BaseView {
 
-    void displayNewsList(List<NewsVO> newsList);
-
     void launchNewsDetailsScreen(String newsId);
 }

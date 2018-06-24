@@ -1,56 +1,29 @@
 package com.padcmyanmar.sfc.mvp.presenters;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
 import com.padcmyanmar.sfc.data.models.NewsModel;
 import com.padcmyanmar.sfc.data.vo.NewsVO;
 import com.padcmyanmar.sfc.delegates.NewsItemDelegate;
-import com.padcmyanmar.sfc.events.RestApiEvents;
 import com.padcmyanmar.sfc.mvp.views.NewsListView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import java.util.List;
 
 public class NewsListPresenter extends BasePresenter<NewsListView>
         implements NewsItemDelegate {
 
-    public NewsListPresenter(NewsListView view) {
-        super(view);
-    }
+    private MutableLiveData<List<NewsVO>> mNewsListLD;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        NewsModel.getInstance().startLoadingMMNews();
+    public void initPresenter(NewsListView view) {
+        super.initPresenter(view);
+        mNewsListLD = new MutableLiveData<>();
+        NewsModel.getInstance().startLoadingMMNews(mNewsListLD, mErrorLD);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewsDataLoaded(RestApiEvents.NewsDataLoadedEvent event) {
-        if (event.getLoadNews() == null) {
-            mView.displayErrorMsg("Empty data");
-        } else {
-            mView.displayNewsList(event.getLoadNews());
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onErrorInvokingApi(RestApiEvents.ErrorInvokingAPIEvent event) {
-        mView.displayErrorMsg(event.getErrorMsg());
+    public LiveData<List<NewsVO>> getNewsListLD() {
+        return mNewsListLD;
     }
 
     @Override
