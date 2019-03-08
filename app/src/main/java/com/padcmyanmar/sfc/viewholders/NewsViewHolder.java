@@ -8,10 +8,6 @@ import com.bumptech.glide.Glide;
 import com.padcmyanmar.sfc.R;
 import com.padcmyanmar.sfc.data.vo.NewsVO;
 import com.padcmyanmar.sfc.delegates.NewsItemDelegate;
-import com.padcmyanmar.sfc.events.RestApiEvents;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,7 +43,7 @@ public class NewsViewHolder extends BaseViewHolder<NewsVO> {
         mNews = data;
         tvBriefNews.setText(data.getDetails());
 
-        if(!data.getImages().isEmpty()) {
+        if (!data.getImages().isEmpty()) {
             Glide.with(ivNewsHero.getContext())
                     .load(data.getImages().get(0))
                     .into(ivNewsHero);
